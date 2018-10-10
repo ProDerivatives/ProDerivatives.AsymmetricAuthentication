@@ -9,7 +9,7 @@
     <PackageTags>OAuth2;OAuth 2.0;OpenID Connect;Security;Asymmetric Authentication</PackageTags>
     <PackageIconUrl>https://raw.githubusercontent.com/ProDerivatives/ProDerivatives.AsymmetricAuthentication/master/ProDIcon.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/ProDerivatives/ProDerivatives.AsymmetricAuthentication.git</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/IdentityServer/IdentityServer4.AccessTokenValidation/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/ProDerivatives/ProDerivatives.AsymmetricAuthentication/master/LICENSE</PackageLicenseUrl>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
