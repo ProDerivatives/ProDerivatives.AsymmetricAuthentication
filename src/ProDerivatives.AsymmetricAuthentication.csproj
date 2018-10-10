@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <VersionPrefix>2.6.0</VersionPrefix>
+    <VersionPrefix>0.1.0</VersionPrefix>
     <!--<VersionSuffix>preview1</VersionSuffix>-->
     <Description>ASP.NET Core authentication handler to validate messages signed with an asymmetric authentication scheme</Description>
     <Authors>ProDerivatives</Authors>
-    <PackageId>ProDerivatives.AccessControl</PackageId>
-    <PackageTags>OAuth2;OAuth 2.0;OpenID Connect;Security;Identity;IdentityServer;Bearer tokens</PackageTags>
+    <PackageId>ProDerivatives.AsymmetricAuthentication</PackageId>
+    <PackageTags>OAuth2;OAuth 2.0;OpenID Connect;Security;Asymmetric Authentication</PackageTags>
     <PackageIconUrl>https://raw.githubusercontent.com/IdentityServer/Artwork/master/Logos/IDserver_icon128.jpg</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/IdentityServer/IdentityServer4.AccessTokenValidation</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/ProDerivatives/ProDerivatives.AsymmetricAuthentication.git</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/IdentityServer/IdentityServer4.AccessTokenValidation/LICENSE</PackageLicenseUrl>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <SynchReleaseVersion>false</SynchReleaseVersion>
