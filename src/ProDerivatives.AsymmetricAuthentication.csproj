@@ -7,7 +7,7 @@
     <Authors>ProDerivatives</Authors>
     <PackageId>ProDerivatives.AsymmetricAuthentication</PackageId>
     <PackageTags>OAuth2;OAuth 2.0;OpenID Connect;Security;Asymmetric Authentication</PackageTags>
-    <PackageIconUrl>https://raw.githubusercontent.com/IdentityServer/Artwork/master/Logos/IDserver_icon128.jpg</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/ProDerivatives/ProDerivatives.AsymmetricAuthentication/master/ProDIcon.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/ProDerivatives/ProDerivatives.AsymmetricAuthentication.git</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/IdentityServer/IdentityServer4.AccessTokenValidation/LICENSE</PackageLicenseUrl>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -23,12 +23,7 @@
   <ItemGroup>
     <PackageReference Include="IdentityModel.AspNetCore.OAuth2Introspection" Version="3.4.1" />
     <PackageReference Include="SourceLink.Embed.AllSourceFiles" Version="2.8.3" PrivateAssets="all" />
-    
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.1.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="IdentityServerAuthenticationDefaults.cs" />
-    <Compile Remove="ConfigureInternalOptions.cs" />
   </ItemGroup>
 </Project>
