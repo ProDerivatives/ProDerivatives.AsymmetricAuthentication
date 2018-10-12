@@ -1,5 +1,5 @@
 ﻿using System;
-namespace ProDerivatives.AccessControl
+namespace ProDerivatives.AsymmetricAuthentication
 {
     /// <summary>
     /// Constants for asymmetric authentication.

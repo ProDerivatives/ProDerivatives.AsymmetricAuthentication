@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 
-namespace ProDerivatives.AccessControl
+namespace ProDerivatives.AsymmetricAuthentication
 {
     /// <summary>
     /// Asymmetric authentication options.
@@ -21,5 +21,11 @@ namespace ProDerivatives.AccessControl
         /// <value>The signature token retriever.</value>
         public Func<HttpRequest, AuthenticationToken> SignatureTokenRetriever { get; set; } = TokenRetrieval.FromAuthenticationHeader();
 
+        /// <summary>
+        /// Gets or sets the signature validator.
+        /// Args: Signature, PublicKey, Message
+        /// </summary>
+        /// <value>The signature validator.</value>
+        public Func<string, string, string, bool> SignatureValidator { get; set; }
     }
 }

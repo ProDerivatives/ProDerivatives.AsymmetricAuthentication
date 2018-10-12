@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace ProDerivatives.AccessControl
+namespace ProDerivatives.AsymmetricAuthentication
 {
     /// <summary>
     /// Token retrieval.

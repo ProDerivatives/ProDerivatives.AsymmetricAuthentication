@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Authentication;
-using ProDerivatives.AccessControl;
+using ProDerivatives.AsymmetricAuthentication;
 
 namespace Microsoft.AspNetCore.Builder
 {

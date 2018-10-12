@@ -1,14 +1,16 @@
 ﻿using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace ProDerivatives.AccessControl
+namespace ProDerivatives.AsymmetricAuthentication
 {
     /// <summary>
     /// Authentication handler for validating signed messages
@@ -25,7 +27,7 @@ namespace ProDerivatives.AccessControl
             IOptionsMonitor<AsymmetricAuthenticationOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
-            ISystemClock clock) 
+            ISystemClock clock)
             : base(options, logger, encoder, clock)
         {
             _logger = logger.CreateLogger<AsymmetricAuthenticationHandler>();
@@ -45,10 +47,29 @@ namespace ProDerivatives.AccessControl
             {
                 // TODO: Check Signature and Fail signature is not valid
 
+                using (var mem = new MemoryStream())
+                {
+                    Request.EnableRewind();
+                    await Request.Body.CopyToAsync(mem);
+                    Request.Body.Position = 0;
+                    mem.Position = 0;
+                    using (var reader = new StreamReader(mem))
+                    {
+                        var body = reader.ReadToEnd();
+                        var message = $"{signatureToken.Nonce}{body}";
+                        var isSignatureValid = Options.SignatureValidator(signatureToken.Signature, signatureToken.PublicKey, message);
+                        if (!isSignatureValid)
+                            return AuthenticateResult.Fail("Signature invalid");
+                    }
+                }
+
+                // Signature is valid - Authenticate Bearer token
+                
                 var bearerToken = Options.BearerTokenRetriever(Context.Request);
                 if (bearerToken != null)
                 {
                     // Compare subject on JWT token with signature principal and delegate to Bearer authentication if they do match
+                    // in which case Bearer handler will return AuthenticateResult
 
                     var jwtHandler = new JwtSecurityTokenHandler();
                     var jwtReader = jwtHandler.ReadJwtToken(bearerToken);
@@ -66,7 +87,9 @@ namespace ProDerivatives.AccessControl
 
                 return AuthenticateResult.Success(new AuthenticationTicket(principal, AsymmetricAuthenticationDefaults.AuthenticationScheme));
 
-            } else {
+            }
+            else
+            {
                 return AuthenticateResult.NoResult();
             }
         }

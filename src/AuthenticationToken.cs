@@ -1,5 +1,5 @@
 ﻿using System;
-namespace ProDerivatives.AccessControl
+namespace ProDerivatives.AsymmetricAuthentication
 {
     /// <summary>
     /// Authentication Token
