@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
@@ -45,7 +46,6 @@ namespace ProDerivatives.AsymmetricAuthentication
 
             if (signatureToken != null)
             {
-                // TODO: Check Signature and Fail signature is not valid
 
                 using (var mem = new MemoryStream())
                 {
@@ -56,10 +56,13 @@ namespace ProDerivatives.AsymmetricAuthentication
                     using (var reader = new StreamReader(mem))
                     {
                         var body = reader.ReadToEnd();
-                        var message = $"{signatureToken.Nonce}{body}";
+                        var message = $"{signatureToken.Nonce}|{Request.Method.ToUpper()}|{Request.Path.Value}|{body}";
                         var isSignatureValid = Options.SignatureValidator(signatureToken.Signature, signatureToken.PublicKey, message);
                         if (!isSignatureValid)
+                        {
+                            _logger.LogWarning($"Signature invalid. PublicKey: {signatureToken.PublicKey}, Signature: {signatureToken.Signature}, Message: {message}");
                             return AuthenticateResult.Fail("Signature invalid");
+                        } 
                     }
                 }
 
