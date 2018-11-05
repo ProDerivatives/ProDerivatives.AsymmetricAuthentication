@@ -9,8 +9,11 @@ namespace ProDerivatives.AsymmetricAuthentication
         /// <summary>
         /// The authentication scheme
         /// </summary>
-        public const string AuthenticationScheme = "Signature";
+        public const string AuthenticationScheme = "AsymmetricAuthentication";
 
+        /// <summary>
+        /// The display name
+        /// </summary>
         public const string DisplayName = "Asymmetric Authentication";
 
         internal const string EffectiveSchemeKey = "prod:tokenvalidation:effective:";
