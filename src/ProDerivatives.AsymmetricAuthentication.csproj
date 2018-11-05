@@ -12,7 +12,7 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/ProDerivatives/ProDerivatives.AsymmetricAuthentication/master/LICENSE</PackageLicenseUrl>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <SynchReleaseVersion>false</SynchReleaseVersion>
-    <Version>0.1.7</Version>
+    <Version>0.1.8</Version>
   </PropertyGroup>
   
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

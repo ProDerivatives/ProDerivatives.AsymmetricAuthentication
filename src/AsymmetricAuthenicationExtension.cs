@@ -44,7 +44,7 @@ namespace Microsoft.AspNetCore.Builder
         /// <returns></returns>
         public static AuthenticationBuilder AddAsymmetricAuthentication(this AuthenticationBuilder builder, string authenticationScheme, Action<AsymmetricAuthenticationOptions> configureOptions)
         {
-            return builder.AddScheme<AsymmetricAuthenticationOptions, AsymmetricAuthenticationHandler>(authenticationScheme, configureOptions);
+            return builder.AddScheme<AsymmetricAuthenticationOptions, AsymmetricAuthenticationHandler>(authenticationScheme, AsymmetricAuthenticationDefaults.DisplayName, configureOptions);
         }
     }
 }

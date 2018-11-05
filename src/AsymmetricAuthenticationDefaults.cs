@@ -11,6 +11,8 @@ namespace ProDerivatives.AsymmetricAuthentication
         /// </summary>
         public const string AuthenticationScheme = "Signature";
 
+        public const string DisplayName = "Asymmetric Authentication";
+
         internal const string EffectiveSchemeKey = "prod:tokenvalidation:effective:";
     }
 }
