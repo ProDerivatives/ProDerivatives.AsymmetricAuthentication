@@ -55,7 +55,9 @@ namespace ProDerivatives.AsymmetricAuthentication
                     mem.Position = 0;
                     using (var reader = new StreamReader(mem))
                     {
-                        var body = reader.ReadToEnd();
+                        string body = string.Empty;
+                        if (!Request.ContentType.StartsWith("multipart/form-data", StringComparison.InvariantCultureIgnoreCase))
+                            body = reader.ReadToEnd();
                         var message = $"{signatureToken.Nonce}|{Request.Method.ToUpper()}|{Request.Path.Value}|{body}";
                         var isSignatureValid = Options.SignatureValidator(signatureToken.Signature, signatureToken.PublicKey, message);
                         if (!isSignatureValid)
