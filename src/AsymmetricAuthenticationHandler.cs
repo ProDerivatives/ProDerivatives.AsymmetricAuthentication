@@ -86,10 +86,11 @@ namespace ProDerivatives.AsymmetricAuthentication
 
                 // Default if no bearer token present: Create claims identity from public key and authorize access
                 var id = new ClaimsIdentity(AsymmetricAuthenticationDefaults.AuthenticationScheme);
+                id.AddClaim(new Claim(ClaimTypes.Name, signatureToken.PublicKey));
                 id.AddClaim(new Claim(JwtClaimTypes.Subject, signatureToken.PublicKey));
                 id.AddClaim(new Claim(JwtClaimTypes.Name, signatureToken.PublicKey));
                 var principal = new ClaimsPrincipal(id);
-
+                
                 return AuthenticateResult.Success(new AuthenticationTicket(principal, AsymmetricAuthenticationDefaults.AuthenticationScheme));
 
             }
