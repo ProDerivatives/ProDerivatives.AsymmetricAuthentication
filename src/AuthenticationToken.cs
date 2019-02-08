@@ -7,6 +7,11 @@ namespace ProDerivatives.AsymmetricAuthentication
     public class AuthenticationToken
     {
         /// <summary>
+        /// Network
+        /// </summary>
+        public string Network { get; set; }
+
+        /// <summary>
         /// Signature
         /// </summary>
         public string Signature { get; set; }
