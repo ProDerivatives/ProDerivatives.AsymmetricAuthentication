@@ -56,7 +56,7 @@ namespace ProDerivatives.AsymmetricAuthentication
                     using (var reader = new StreamReader(mem))
                     {
                         string body = string.Empty;
-                        if (!Request.ContentType.StartsWith("multipart/form-data", StringComparison.InvariantCultureIgnoreCase))
+                        // Ignore body if file upload                        if (Request.ContentType == null)   //!Request.ContentType.StartsWith("multipart/form-data", StringComparison.InvariantCultureIgnoreCase))
                             body = reader.ReadToEnd();
                         var message = $"{signatureToken.Nonce}|{Request.Method.ToUpper()}|{Request.Path.Value}|{body}";
                         var isSignatureValid = Options.SignatureValidator(signatureToken.Signature, signatureToken.PublicKey, message);
