@@ -58,7 +58,7 @@ namespace ProDerivatives.AsymmetricAuthentication
                         string body = string.Empty;
                         // Ignore body if file upload                        if (Request.ContentType != null && !Request.ContentType.StartsWith("multipart/form-data", StringComparison.InvariantCultureIgnoreCase))
                             body = reader.ReadToEnd();
-                        var message = $"{signatureToken.Nonce}|{Request.Method.ToUpper()}|{Request.Path.Value}|{body}";
+                        var message = $"{signatureToken.Nonce}|{Request.Method.ToUpper()}|{Request.Path.Value}{Request.QueryString.Value}|{body}";
                         var isSignatureValid = Options.SignatureValidator(signatureToken.Signature, signatureToken.PublicKey, message);
                         if (!isSignatureValid)
                         {
