@@ -89,7 +89,6 @@ namespace ProDerivatives.AsymmetricAuthentication
                 id.AddClaim(new Claim(ClaimTypes.Name, signatureToken.PublicKey));
                 id.AddClaim(new Claim(JwtClaimTypes.Subject, signatureToken.PublicKey));
                 id.AddClaim(new Claim(JwtClaimTypes.Name, signatureToken.PublicKey));
-                id.AddClaim(new Claim("Network", signatureToken.Network));
                 var principal = new ClaimsPrincipal(id);
                 
                 return AuthenticateResult.Success(new AuthenticationTicket(principal, AsymmetricAuthenticationDefaults.AuthenticationScheme));
