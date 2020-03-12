@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <!--<VersionSuffix>preview1</VersionSuffix>-->
     <Description>ASP.NET Core authentication handler to validate messages signed with an asymmetric authentication scheme</Description>
     <Authors>ProDerivatives</Authors>
@@ -10,7 +10,7 @@
     <PackageProjectUrl>https://github.com/ProDerivatives/ProDerivatives.AsymmetricAuthentication.git</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/ProDerivatives/ProDerivatives.AsymmetricAuthentication/master/LICENSE</PackageLicenseUrl>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Version>0.1.14</Version>
+    <Version>0.1.15</Version>
     <PackageVersion>0.1.22</PackageVersion>
     <ReleaseVersion>0.1.19</ReleaseVersion>
   </PropertyGroup>

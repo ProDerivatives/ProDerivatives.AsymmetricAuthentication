@@ -78,7 +78,8 @@ namespace ProDerivatives.AsymmetricAuthentication
 
                 using (var mem = new MemoryStream())
                 {
-                    request.EnableRewind();
+                    request.EnableBuffering();
+                    //request.EnableRewind();
                     await request.Body.CopyToAsync(mem);
                     request.Body.Position = 0;
                     mem.Position = 0;
