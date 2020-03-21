@@ -23,9 +23,9 @@ namespace ProDerivatives.AsymmetricAuthentication
 
         /// <summary>
         /// Gets or sets the signature validator.
-        /// Args: Signature, PublicKey, Message
+        /// Args: AuthenticationToken, Message
         /// </summary>
         /// <value>The signature validator.</value>
-        public Func<string, string, string, bool> SignatureValidator { get; set; }
+        public Func<AuthenticationToken, string, bool> SignatureValidator { get; set; }
     }
 }

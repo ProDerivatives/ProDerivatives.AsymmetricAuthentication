@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
@@ -88,8 +89,15 @@ namespace ProDerivatives.AsymmetricAuthentication
                         string body = string.Empty;
                         // Ignore body if file upload                        if (request.ContentType != null && !request.ContentType.StartsWith("multipart/form-data", StringComparison.InvariantCultureIgnoreCase))
                             body = reader.ReadToEnd();
-                        var message = $"{signatureToken.Nonce}|{request.Method.ToUpper()}|{request.Path.Value}{request.QueryString.Value}|{body}";
-                        var isSignatureValid = options.SignatureValidator(signatureToken.Signature, signatureToken.PublicKey, message);
+
+                        //remove signature token from query params if passed in header
+                        var queryString = request.QueryString.Value;
+                        var authenticationScheme = request.Query["scheme"];
+                        if (!string.IsNullOrEmpty(authenticationScheme) && authenticationScheme == AsymmetricAuthenticationDefaults.AuthenticationScheme)
+                            queryString = RemoveAuthenticationToken(request.QueryString.Value);
+
+                        var message = $"{signatureToken.Nonce}|{request.Method.ToUpper()}|{request.Path.Value}{queryString}|{body}";
+                        var isSignatureValid = options.SignatureValidator(signatureToken, message);
                         if (!isSignatureValid)
                         {
                             _logger.LogWarning($"Signature invalid. PublicKey: {signatureToken.PublicKey}, Signature: {signatureToken.Signature}, Message: {message}");
@@ -102,6 +110,8 @@ namespace ProDerivatives.AsymmetricAuthentication
                 id.AddClaim(new Claim(ClaimTypes.Name, signatureToken.PublicKey));
                 id.AddClaim(new Claim(JwtClaimTypes.Subject, signatureToken.PublicKey));
                 id.AddClaim(new Claim(JwtClaimTypes.Name, signatureToken.PublicKey));
+                id.AddClaim(new Claim(JwtClaimTypes.AuthenticationTime, signatureToken.Timestamp.ToString()));
+                id.AddClaim(new Claim(JwtClaimTypes.Nonce, signatureToken.Nonce.ToString()));
                 var principal = new ClaimsPrincipal(id);
                 
                 return AuthenticateResult.Success(new AuthenticationTicket(principal, AsymmetricAuthenticationDefaults.AuthenticationScheme));
@@ -110,6 +120,24 @@ namespace ProDerivatives.AsymmetricAuthentication
             {
                 return AuthenticateResult.NoResult();
             }
+        }
+
+        private static string RemoveAuthenticationToken(string queryString)
+        {
+            string result = queryString.Trim();
+            var queryParams = queryString.Trim().Replace("?", string.Empty).Split('&');
+            var tokenParams = new List<string> { "scheme", "nonce", "publickey", "signature", "timestamp" };
+            foreach (var q in queryParams)
+            {
+                if (tokenParams.Contains(q.ToLower().Split('=')[0]))
+                {
+                    result = result.Replace($"&{q}", string.Empty);
+                    result = result.Replace(q, string.Empty);
+                }
+            }
+            if (result.EndsWith("?"))
+                result = result.TrimEnd('?');
+            return result;
         }
 
         /// <summary>

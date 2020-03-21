@@ -10,7 +10,9 @@
     <PackageProjectUrl>https://github.com/ProDerivatives/ProDerivatives.AsymmetricAuthentication.git</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/ProDerivatives/ProDerivatives.AsymmetricAuthentication/master/LICENSE</PackageLicenseUrl>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Version>0.1.23</Version>
+    <ReleaseVersion>0.1.24</ReleaseVersion>
+    <SynchReleaseVersion>false</SynchReleaseVersion>
+    <PackageVersion>0.1.24</PackageVersion>
   </PropertyGroup>
   
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
