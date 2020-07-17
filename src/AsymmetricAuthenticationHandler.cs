@@ -87,7 +87,8 @@ namespace ProDerivatives.AsymmetricAuthentication
                     using (var reader = new StreamReader(mem))
                     {
                         string body = string.Empty;
-                        // Ignore body if file upload                        if (request.ContentType != null && !request.ContentType.StartsWith("multipart/form-data", StringComparison.InvariantCultureIgnoreCase))
+                        // Ignore body if file upload
+                        if (request.ContentType != null && !request.ContentType.StartsWith("multipart/form-data", StringComparison.InvariantCultureIgnoreCase))
                             body = reader.ReadToEnd();
 
                         //remove signature token from query params if passed in header

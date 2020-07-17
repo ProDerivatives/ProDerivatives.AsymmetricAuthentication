@@ -1,80 +1,50 @@
 # ProDerivatives.AsymmetricAuthentication
 Authentication handler for .NET Standard 2.0 that allows validation of asymmetrically signed messages.
 
-Technically this handler is a decorator over both the Microsoft [JWT handler](https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.JwtBearer/) as well as our OAuth 2 [introspection handler](https://www.nuget.org/packages/IdentityModel.AspNetCore.OAuth2Introspection/). If you only need to support one token type only, we recommend using the underlying handlers directly.
+## Usage
+Enable asymmetric authentication in ConfigureService method
 
-## Issues
-For issues, use the [consolidated IdentityServer4 issue tracker](https://github.com/IdentityServer/IdentityServer4/issues).
+```csharp
+services.AddAuthentication(AsymmetricAuthenticationDefaults.AuthenticationScheme)
+    .AddAsymmetricAuthentication(options =>
+    {
+        options.SignatureTokenRetriever = TokenRetrieval.FromAuthenticationHeader();
+        options.SignatureValidator = VerifySignature();
+    });
+```
 
-## JWT Usage
+Verify signature, in this case Ethereum signatures using ProDerivatives.Ethereum nuget package
+
+```csharp
+private static Func<AuthenticationToken, string, bool> VerifySignature()
+{
+    return (token, message) =>
+    {
+        var verifyFunction = ProDerivatives.Ethereum.Signer.VerifySignature();
+        return verifyFunction(token.Signature, token.PublicKey, message);
+    };
+}
+```
+
+### Add bearer token validation with IdentityServer
 Simply specify authority and API name (aka audience):
 
 ```csharp
-services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-    .AddIdentityServerAuthentication(options =>
+services.AddAuthentication(AsymmetricAuthenticationDefaults.AuthenticationScheme)
+    .AddAsymmetricAuthentication(options =>
     {
-        options.Authority = "https://demo.identityserver.io";
-        options.ApiName = "api1";
-    });
-```
-
-## Enable reference tokens
-Additionally specify the API secret for the introspection endpoint:
-
-```csharp
-services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-    .AddIdentityServerAuthentication(options =>
-    {
-        options.Authority = "https://demo.identityserver.io";
-        options.ApiName = "api1";
-        options.ApiSecret = "secret";
-    });
-```
-
-## Specifying the underlying handler options directly
-In case you need access to a setting that the combined options don't expose, you can fallback to configuring the underlying handler directly.
-
-```csharp
-services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-    .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme,
-        jwtOptions =>
-        {
-            // jwt bearer options
-        },
-        referenceOptions =>
-        {
-            // oauth2 introspection options
-        });
-```
-
-## Scope validation
-In addition to API name checking, you can do more fine-grained scope checks. This package includes some convenience helpers to do that.
-
-### Create a global authorization policy
-
-```csharp
-services
-    .AddMvcCore(options =>
-    {
-        // require scope1 or scope2
-        var policy = ScopePolicy.Create("scope1", "scope2");
-        options.Filters.Add(new AuthorizeFilter(policy));
+        options.SignatureTokenRetriever = TokenRetrieval.FromAuthenticationHeader();
+        options.SignatureValidator = VerifySignature();
     })
-    .AddJsonFormatters()
-    .AddAuthorization();
-```
-
-### Composing a scope policy
-
-```csharp
-services.AddAuthorization(options =>
-{
-    options.AddPolicy("myPolicy", builder =>
+    .AddIdentityServerAuthentication(options =>
     {
-        // require scope1
-        builder.RequireScope("scope1");
-        // and require scope2 or scope3
-        builder.RequireScope("scope2", "scope3");
+        options.Authority = Configuration["Settings:Authority"];
+
+        if (Configuration["ASPNETCORE_ENVIRONMENT"] == "Development")
+            options.RequireHttpsMetadata = false;
+
+        options.ApiName = "ProDerivatives";
     });
-});
 ```
+
+If bearer tokens are used then subject must match public key of signature.
